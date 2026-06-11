@@ -2,7 +2,7 @@ import { profile } from "@/lib/data";
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 border-t border-white/[0.06]">
+    <footer className="relative z-10 border-t border-[var(--border)]">
       <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-sm text-text-4">
           © {new Date().getFullYear()} {profile.name} · {profile.title} · {profile.location}

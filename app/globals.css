@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-:root {
+/* Dark ("night") palette — applied when data-theme="dark" */
+:root,
+:root[data-theme="dark"] {
   --background: #060709;
   --surface: #0b0d12;
   --foreground: #f2f4f8;
@@ -14,6 +16,51 @@
   --border-strong: rgba(255, 255, 255, 0.14);
   --glass: rgba(255, 255, 255, 0.04);
   --glass-strong: rgba(255, 255, 255, 0.07);
+  --panel: rgba(11, 13, 18, 0.62);
+  --tile: rgba(7, 9, 13, 0.8);
+  --grid-line: rgba(255, 255, 255, 0.04);
+  --hover: rgba(255, 255, 255, 0.05);
+  --faint: rgba(255, 255, 255, 0.09);
+  --track: rgba(255, 255, 255, 0.07);
+  --overlay: rgba(6, 7, 9, 0.55);
+  --nav-bg: rgba(6, 7, 9, 0.75);
+  --warn: #fcd34d;
+  --warn-border: rgba(252, 211, 77, 0.3);
+  --warn-bg: rgba(252, 211, 77, 0.07);
+  --on-accent: #04211d;
+  --scrollbar: rgba(255, 255, 255, 0.12);
+  --scrollbar-hover: rgba(255, 255, 255, 0.2);
+}
+
+/* Light ("day") palette — the default theme */
+:root[data-theme="light"] {
+  --background: #f5f7fa;
+  --surface: #ffffff;
+  --foreground: #0e1216;
+  --text-1: #0e1216;
+  --text-2: #353d4a;
+  --text-3: #5b6473;
+  --text-4: #8a93a3;
+  --accent: #0d9488;
+  --accent-2: #0891b2;
+  --border: rgba(12, 22, 34, 0.1);
+  --border-strong: rgba(12, 22, 34, 0.18);
+  --glass: rgba(255, 255, 255, 0.6);
+  --glass-strong: rgba(255, 255, 255, 0.78);
+  --panel: rgba(255, 255, 255, 0.7);
+  --tile: rgba(255, 255, 255, 0.85);
+  --grid-line: rgba(12, 22, 34, 0.09);
+  --hover: rgba(12, 22, 34, 0.05);
+  --faint: rgba(12, 22, 34, 0.12);
+  --track: rgba(12, 22, 34, 0.1);
+  --overlay: rgba(245, 247, 250, 0.55);
+  --nav-bg: rgba(245, 247, 250, 0.78);
+  --warn: #b45309;
+  --warn-border: rgba(180, 83, 9, 0.3);
+  --warn-bg: rgba(180, 83, 9, 0.07);
+  --on-accent: #ffffff;
+  --scrollbar: rgba(12, 22, 34, 0.18);
+  --scrollbar-hover: rgba(12, 22, 34, 0.32);
 }
 
 @theme inline {
@@ -42,11 +89,12 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 ::selection {
-  background: rgba(45, 212, 191, 0.25);
-  color: #f2f4f8;
+  background: rgba(13, 148, 136, 0.25);
+  color: var(--text-1);
 }
 
 ::-webkit-scrollbar {
@@ -56,12 +104,12 @@ body {
   background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--scrollbar);
   border-radius: 8px;
   border: 2px solid var(--background);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--scrollbar-hover);
 }
 
 /* ---------- Design system utilities ---------- */
@@ -81,7 +129,7 @@ body {
 }
 
 .panel {
-  background: rgba(11, 13, 18, 0.62);
+  background: var(--panel);
   border: 1px solid var(--border);
 }
 
@@ -110,6 +158,11 @@ body {
   background-clip: text;
   color: transparent;
 }
+:root[data-theme="light"] .text-gradient {
+  background: linear-gradient(120deg, #0d9488 0%, #0891b2 55%, #0369a1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
 
 .heading-tight {
   letter-spacing: -0.03em;
@@ -125,10 +178,14 @@ body {
   border-radius: 9999px;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #04211d;
+  color: var(--on-accent);
   background: linear-gradient(120deg, #2dd4bf, #22d3ee);
   box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.25), 0 8px 32px rgba(34, 211, 238, 0.18);
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+:root[data-theme="light"] .btn-primary {
+  background: linear-gradient(120deg, #0d9488, #0891b2);
+  box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.25), 0 8px 32px rgba(8, 145, 178, 0.22);
 }
 .btn-primary:hover {
   transform: translateY(-2px);
@@ -152,8 +209,8 @@ body {
 }
 .btn-ghost:hover {
   transform: translateY(-2px);
-  border-color: rgba(45, 212, 191, 0.45);
-  background: rgba(45, 212, 191, 0.06);
+  border-color: rgba(13, 148, 136, 0.45);
+  background: rgba(13, 148, 136, 0.06);
 }
 
 .metric-num {
@@ -178,6 +235,11 @@ body {
   background:
     radial-gradient(ellipse 90% 60% at 50% 0%, rgba(6, 7, 9, 0) 0%, rgba(6, 7, 9, 0.55) 100%),
     linear-gradient(180deg, rgba(6, 7, 9, 0.35) 0%, rgba(6, 7, 9, 0) 18%, rgba(6, 7, 9, 0) 82%, rgba(6, 7, 9, 0.5) 100%);
+}
+:root[data-theme="light"] .vignette {
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(245, 247, 250, 0) 0%, rgba(245, 247, 250, 0.5) 100%),
+    linear-gradient(180deg, rgba(245, 247, 250, 0.4) 0%, rgba(245, 247, 250, 0) 18%, rgba(245, 247, 250, 0) 82%, rgba(245, 247, 250, 0.5) 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {

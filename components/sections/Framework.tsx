@@ -40,7 +40,7 @@ export default function Framework() {
             onMouseLeave={() => setPaused(false)}
           >
             {/* Connector line (desktop) */}
-            <div className="hidden md:block absolute top-[26px] left-[8.33%] right-[8.33%] h-px bg-white/[0.08]" aria-hidden="true">
+            <div className="hidden md:block absolute top-[26px] left-[8.33%] right-[8.33%] h-px bg-[var(--track)]" aria-hidden="true">
               <motion.div
                 className="h-full bg-gradient-to-r from-accent to-accent-2 origin-left"
                 animate={{ scaleX: active / (frameworkSteps.length - 1) }}
@@ -64,7 +64,7 @@ export default function Framework() {
                   <span
                     className={`relative z-10 w-[52px] h-[52px] rounded-full flex items-center justify-center font-mono text-sm transition-all duration-500 ${
                       isActive
-                        ? "bg-gradient-to-br from-accent to-accent-2 text-[#04211d] shadow-[0_0_28px_rgba(34,211,238,0.4)]"
+                        ? "bg-gradient-to-br from-accent to-accent-2 text-[var(--on-accent)] shadow-[0_0_28px_rgba(34,211,238,0.4)]"
                         : isPast
                           ? "glass text-accent border-accent/30"
                           : "glass text-text-4 group-hover:text-text-2"
@@ -108,7 +108,7 @@ export default function Framework() {
                   </p>
                   <p className="text-lg md:text-xl text-text-2 leading-relaxed font-light">{step.desc}</p>
                 </div>
-                <div className="md:border-l md:border-white/[0.07] md:pl-14">
+                <div className="md:border-l md:border-[var(--border)] md:pl-14">
                   <p className="font-mono text-xs tracking-[0.25em] uppercase text-text-4 mb-4">In Practice</p>
                   <p className="text-[15px] text-text-3 leading-[1.8]">{step.example}</p>
                 </div>

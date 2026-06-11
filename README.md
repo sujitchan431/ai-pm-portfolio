@@ -10,6 +10,7 @@ A scroll-controlled 3D portfolio experience built to feel like moving through an
 - **GSAP ScrollTrigger** — pinned horizontal-scroll journey timeline
 - **Framer Motion** — section reveals, counters, cinematic card transitions
 - **Lenis** — smooth scrolling synced to GSAP and the 3D camera
+- **Day/night theme** — light ("day") by default, toggle in the nav, persisted to localStorage; the Three.js scene swaps palettes and blending per theme
 
 ## Architecture
 

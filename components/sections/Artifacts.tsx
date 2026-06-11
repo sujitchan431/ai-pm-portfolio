@@ -31,17 +31,17 @@ export default function Artifacts() {
               className="glass rounded-2xl p-7 flex flex-col hover:border-accent/30 transition-colors duration-500"
             >
               {/* Document icon */}
-              <div className="w-10 h-12 rounded-md border border-white/[0.12] bg-white/[0.03] relative mb-6 flex-shrink-0">
-                <div className="absolute top-0 right-0 w-3 h-3 bg-[#0b0d12] border-l border-b border-white/[0.12] rounded-bl-sm" />
+              <div className="w-10 h-12 rounded-md border border-[var(--border-strong)] bg-[var(--glass)] relative mb-6 flex-shrink-0">
+                <div className="absolute top-0 right-0 w-3 h-3 bg-surface border-l border-b border-[var(--border-strong)] rounded-bl-sm" />
                 <div className="absolute left-2 right-2 top-4 space-y-1.5">
                   <div className="h-px bg-accent/60 w-full" />
-                  <div className="h-px bg-white/[0.15] w-4/5" />
-                  <div className="h-px bg-white/[0.15] w-3/5" />
+                  <div className="h-px bg-[var(--track)] w-4/5" />
+                  <div className="h-px bg-[var(--track)] w-3/5" />
                 </div>
               </div>
               <h3 className="text-base font-semibold text-text-1">{artifact.title}</h3>
               <p className="mt-2 text-[13px] text-text-3 leading-[1.7] flex-1">{artifact.desc}</p>
-              <ul className="mt-5 pt-4 border-t border-white/[0.06] space-y-1.5">
+              <ul className="mt-5 pt-4 border-t border-[var(--border)] space-y-1.5">
                 {artifact.items.map((item) => (
                   <li key={item} className="text-[11px] font-mono text-text-4 truncate">
                     <span className="text-accent/60 mr-1.5">›</span>

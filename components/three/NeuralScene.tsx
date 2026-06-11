@@ -4,10 +4,39 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useMemo, useRef, useState, useEffect } from "react";
 import { scrollState } from "@/lib/scroll";
+import { getTheme, subscribeTheme, type Theme } from "@/lib/theme";
 
 const TUNNEL_NEAR = 6;
 const TUNNEL_FAR = -100;
 const CAMERA_TRAVEL = 88; // total z distance camera moves across the page
+
+// Additive blending glows on dark but washes out to white on a light page —
+// the day theme uses darker colors with normal blending instead.
+const SCENE_COLORS: Record<
+  Theme,
+  { palette: string[]; line: string; lineOpacity: number; packet: string; coreWire: string; coreInner: string; fog: string; blending: THREE.Blending }
+> = {
+  dark: {
+    palette: ["#2dd4bf", "#22d3ee", "#7dd3fc", "#c7d2e3"],
+    line: "#5eead4",
+    lineOpacity: 0.09,
+    packet: "#99f6e4",
+    coreWire: "#2dd4bf",
+    coreInner: "#22d3ee",
+    fog: "#060709",
+    blending: THREE.AdditiveBlending,
+  },
+  light: {
+    palette: ["#0d9488", "#0e7490", "#0369a1", "#64748b"],
+    line: "#0f766e",
+    lineOpacity: 0.16,
+    packet: "#0d9488",
+    coreWire: "#0f766e",
+    coreInner: "#0891b2",
+    fog: "#f5f7fa",
+    blending: THREE.NormalBlending,
+  },
+};
 
 type Graph = {
   nodeCount: number;
@@ -19,23 +48,18 @@ type Graph = {
   edgePositions: Float32Array;
 };
 
-function buildGraph(nodeCount: number): Graph {
+function buildGraph(nodeCount: number, palette: string[]): Graph {
   const basePositions = new Float32Array(nodeCount * 3);
   const colors = new Float32Array(nodeCount * 3);
   const phases = new Float32Array(nodeCount);
-  const palette = [
-    new THREE.Color("#2dd4bf"),
-    new THREE.Color("#22d3ee"),
-    new THREE.Color("#7dd3fc"),
-    new THREE.Color("#c7d2e3"),
-  ];
+  const paletteColors = palette.map((c) => new THREE.Color(c));
   const rng = (min: number, max: number) => min + Math.random() * (max - min);
 
   for (let i = 0; i < nodeCount; i++) {
     basePositions[i * 3] = rng(-15, 15);
     basePositions[i * 3 + 1] = rng(-9, 9);
     basePositions[i * 3 + 2] = rng(TUNNEL_FAR, TUNNEL_NEAR);
-    const c = palette[Math.floor(Math.random() * palette.length)];
+    const c = paletteColors[Math.floor(Math.random() * paletteColors.length)];
     colors[i * 3] = c.r;
     colors[i * 3 + 1] = c.g;
     colors[i * 3 + 2] = c.b;
@@ -73,10 +97,11 @@ function buildGraph(nodeCount: number): Graph {
   };
 }
 
-function NeuralGraph({ graph, animate }: { graph: Graph; animate: boolean }) {
+function NeuralGraph({ graph, animate, theme }: { graph: Graph; animate: boolean; theme: Theme }) {
   const pointsRef = useRef<THREE.Points>(null);
   const linesRef = useRef<THREE.LineSegments>(null);
   const packetsRef = useRef<THREE.Points>(null);
+  const colors = SCENE_COLORS[theme];
 
   // Data packets travel along a subset of edges — "neural pathways".
   const packets = useMemo(() => {
@@ -120,7 +145,7 @@ function NeuralGraph({ graph, animate }: { graph: Graph; animate: boolean }) {
     if (linesRef.current) {
       linesRef.current.geometry.attributes.position.needsUpdate = true;
       const mat = linesRef.current.material as THREE.LineBasicMaterial;
-      mat.opacity = 0.09 + Math.sin(t * 0.6) * 0.025;
+      mat.opacity = colors.lineOpacity + Math.sin(t * 0.6) * 0.025;
     }
 
     if (animate) {
@@ -160,10 +185,10 @@ function NeuralGraph({ graph, animate }: { graph: Graph; animate: boolean }) {
           <bufferAttribute attach="attributes-position" args={[graph.edgePositions, 3]} />
         </bufferGeometry>
         <lineBasicMaterial
-          color="#5eead4"
+          color={colors.line}
           transparent
-          opacity={0.1}
-          blending={THREE.AdditiveBlending}
+          opacity={colors.lineOpacity}
+          blending={colors.blending}
           depthWrite={false}
         />
       </lineSegments>
@@ -173,11 +198,11 @@ function NeuralGraph({ graph, animate }: { graph: Graph; animate: boolean }) {
         </bufferGeometry>
         <pointsMaterial
           size={0.16}
-          color="#99f6e4"
+          color={colors.packet}
           transparent
           opacity={0.9}
           sizeAttenuation
-          blending={THREE.AdditiveBlending}
+          blending={colors.blending}
           depthWrite={false}
         />
       </points>
@@ -186,10 +211,11 @@ function NeuralGraph({ graph, animate }: { graph: Graph; animate: boolean }) {
 }
 
 // Intelligence core — visible behind the hero, dissolves as the camera travels.
-function Core({ animate }: { animate: boolean }) {
+function Core({ animate, theme }: { animate: boolean; theme: Theme }) {
   const groupRef = useRef<THREE.Group>(null);
   const wireRef = useRef<THREE.MeshBasicMaterial>(null);
   const innerRef = useRef<THREE.MeshBasicMaterial>(null);
+  const colors = SCENE_COLORS[theme];
 
   useFrame(({ clock }) => {
     const t = clock.elapsedTime;
@@ -212,16 +238,16 @@ function Core({ animate }: { animate: boolean }) {
     <group ref={groupRef} position={[0, 0.2, -6]}>
       <mesh>
         <icosahedronGeometry args={[2.4, 1]} />
-        <meshBasicMaterial ref={wireRef} color="#2dd4bf" wireframe transparent opacity={0.32} depthWrite={false} />
+        <meshBasicMaterial ref={wireRef} color={colors.coreWire} wireframe transparent opacity={0.32} depthWrite={false} />
       </mesh>
       <mesh>
         <icosahedronGeometry args={[1.5, 2]} />
         <meshBasicMaterial
           ref={innerRef}
-          color="#22d3ee"
+          color={colors.coreInner}
           transparent
           opacity={0.1}
-          blending={THREE.AdditiveBlending}
+          blending={colors.blending}
           depthWrite={false}
         />
       </mesh>
@@ -249,14 +275,21 @@ function CameraRig({ animate }: { animate: boolean }) {
 
 export default function NeuralScene() {
   const [config, setConfig] = useState<{ nodes: number; animate: boolean } | null>(null);
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const mobile = window.innerWidth < 768;
     setConfig({ nodes: mobile ? 130 : 230, animate: !reduced });
+    setTheme(getTheme());
+    return subscribeTheme(setTheme);
   }, []);
 
-  const graph = useMemo(() => (config ? buildGraph(config.nodes) : null), [config]);
+  // Vertex colors bake the palette into the geometry, so the graph rebuilds on theme switch.
+  const graph = useMemo(
+    () => (config ? buildGraph(config.nodes, SCENE_COLORS[theme].palette) : null),
+    [config, theme]
+  );
 
   if (!config || !graph) return null;
 
@@ -267,10 +300,11 @@ export default function NeuralScene() {
         dpr={[1, 1.75]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
-        <fog attach="fog" args={["#060709", 10, 48]} />
+        <fog attach="fog" args={[SCENE_COLORS[theme].fog, 10, 48]} />
         <CameraRig animate={config.animate} />
-        <Core animate={config.animate} />
-        <NeuralGraph graph={graph} animate={config.animate} />
+        {/* key forces geometry remount so baked vertex colors swap cleanly */}
+        <Core key={`core-${theme}`} animate={config.animate} theme={theme} />
+        <NeuralGraph key={`graph-${theme}`} graph={graph} animate={config.animate} theme={theme} />
       </Canvas>
       {/* Readability vignette over the scene */}
       <div className="absolute inset-0 vignette" />

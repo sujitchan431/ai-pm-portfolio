@@ -31,12 +31,12 @@ function RadarChart() {
     <svg ref={ref} viewBox={`0 0 ${size} ${size}`} className="w-full max-w-[420px] mx-auto" role="img" aria-label="Skill radar chart">
       {/* Grid rings */}
       {[0.25, 0.5, 0.75, 1].map((s) => (
-        <polygon key={s} points={polygon(s)} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
+        <polygon key={s} points={polygon(s)} fill="none" stroke="var(--border)" strokeWidth="1" />
       ))}
       {/* Spokes */}
       {dashboardSkills.map((_, i) => {
         const [x, y] = point(i, maxR);
-        return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />;
+        return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="var(--border)" strokeWidth="1" />;
       })}
       {/* Data */}
       <motion.polygon
@@ -65,7 +65,7 @@ function RadarChart() {
               cx={dx}
               cy={dy}
               r="3"
-              fill="#2dd4bf"
+              fill="var(--accent)"
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
               transition={{ delay: 0.8 + i * 0.05 }}
@@ -75,7 +75,7 @@ function RadarChart() {
               y={ly}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="fill-[#848b9a]"
+              className="fill-[var(--text-3)]"
               fontSize="10.5"
               fontFamily="var(--font-geist-mono)"
             >
@@ -105,7 +105,7 @@ function SkillBar({ skill, index }: { skill: (typeof dashboardSkills)[0]; index:
           <span className="metric-num text-xs text-accent">{skill.level}</span>
         </span>
       </div>
-      <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+      <div className="h-1.5 rounded-full bg-[var(--track)] overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           animate={inView ? { width: `${skill.level}%` } : {}}
@@ -133,7 +133,7 @@ export default function Dashboard() {
 
         <Reveal>
           <div className="glass-strong rounded-3xl p-8 md:p-12">
-            <div className="flex items-center gap-2 mb-10 pb-6 border-b border-white/[0.06]">
+            <div className="flex items-center gap-2 mb-10 pb-6 border-b border-[var(--border)]">
               <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]/70" />

@@ -88,9 +88,9 @@ function CaseStudyBlock({ study }: { study: CaseStudy }) {
             ))}
           </div>
 
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-white/[0.07] bg-white/[0.04]">
+          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--grid-line)]">
             {study.heroMetrics.map((m) => (
-              <div key={m.label} className="bg-[#07090d]/80 px-5 py-5">
+              <div key={m.label} className="bg-[var(--tile)] px-5 py-5">
                 <div className="metric-num text-2xl md:text-3xl font-semibold text-gradient">{m.value}</div>
                 <div className="mt-1.5 text-[10px] md:text-[11px] font-medium tracking-[0.12em] uppercase text-text-4">
                   {m.label}
@@ -117,7 +117,7 @@ function CaseStudyBlock({ study }: { study: CaseStudy }) {
                 >
                   <span
                     className={`absolute left-0 top-1/2 -translate-y-1/2 w-px transition-all duration-300 ${
-                      isActive ? "h-5 bg-gradient-to-b from-accent to-accent-2" : "h-3 bg-white/[0.12]"
+                      isActive ? "h-5 bg-gradient-to-b from-accent to-accent-2" : "h-3 bg-[var(--track)]"
                     }`}
                   />
                   {phase}
@@ -128,7 +128,7 @@ function CaseStudyBlock({ study }: { study: CaseStudy }) {
         </nav>
 
         {/* Phase content */}
-        <div ref={containerRef} className="divide-y divide-white/[0.05]">
+        <div ref={containerRef} className="divide-y divide-[var(--border)]">
           <PhaseBlock id={`${study.id}-problem`} phase="Problem">
             <p className="text-lg md:text-xl text-text-2 leading-relaxed font-light max-w-3xl">
               {study.problem.context}
@@ -283,7 +283,7 @@ function CaseStudyBlock({ study }: { study: CaseStudy }) {
             <div className="space-y-5">
               {study.lessons.map((lesson, i) => (
                 <div key={i} className="flex gap-5 items-start">
-                  <span className="metric-num text-2xl font-semibold text-white/[0.1] flex-shrink-0 leading-none pt-1">
+                  <span className="metric-num text-2xl font-semibold text-[var(--faint)] flex-shrink-0 leading-none pt-1">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <p className="text-base md:text-lg text-text-2 font-light leading-relaxed">{lesson}</p>
@@ -300,7 +300,7 @@ function CaseStudyBlock({ study }: { study: CaseStudy }) {
 export default function CaseStudies() {
   return (
     <section id="case-studies" className="relative py-28 md:py-36">
-      <div className="absolute inset-0 bg-[#060709]/55" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[var(--overlay)]" aria-hidden="true" />
       <div className="relative max-w-7xl mx-auto px-6">
         <SectionHeading
           label="Featured Case Studies"

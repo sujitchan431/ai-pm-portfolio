@@ -79,7 +79,7 @@ export default function Testimonials() {
                   }}
                   aria-label={`Testimonial ${i + 1}`}
                   className={`h-1 rounded-full transition-all duration-500 ${
-                    i === active ? "w-10 bg-gradient-to-r from-accent to-accent-2" : "w-4 bg-white/[0.12] hover:bg-white/[0.25]"
+                    i === active ? "w-10 bg-gradient-to-r from-accent to-accent-2" : "w-4 bg-[var(--track)] hover:bg-[var(--border-strong)]"
                   }`}
                 />
               ))}

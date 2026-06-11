@@ -13,13 +13,13 @@ function StageCard({ stage }: { stage: (typeof journeyStages)[0] }) {
   return (
     <div className="journey-card flex-shrink-0 w-[85vw] sm:w-[460px] glass rounded-3xl p-8 md:p-10 flex flex-col">
       <div className="flex items-baseline justify-between mb-8">
-        <span className="metric-num text-5xl font-semibold text-white/[0.08]">{stage.stage}</span>
+        <span className="metric-num text-5xl font-semibold text-[var(--faint)]">{stage.stage}</span>
         <span className="font-mono text-xs tracking-[0.2em] uppercase text-accent">{stage.era}</span>
       </div>
       <h3 className="heading-tight text-3xl font-semibold text-text-1">{stage.role}</h3>
       <p className="mt-2 text-sm font-medium text-text-4">{stage.org}</p>
       <p className="mt-5 text-[15px] text-text-3 leading-[1.8] flex-1">{stage.story}</p>
-      <div className="mt-8 pt-6 border-t border-white/[0.07]">
+      <div className="mt-8 pt-6 border-t border-[var(--border)]">
         <p className="text-[10px] font-mono tracking-[0.25em] uppercase text-text-4 mb-2">Lesson Learned</p>
         <p className="text-[15px] font-medium text-gradient leading-snug">&ldquo;{stage.lesson}&rdquo;</p>
       </div>

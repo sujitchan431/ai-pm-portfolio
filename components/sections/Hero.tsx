@@ -55,10 +55,10 @@ export default function Hero() {
 
         <motion.div
           variants={item}
-          className="mt-20 lg:mt-28 grid grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-white/[0.07] bg-white/[0.04]"
+          className="mt-20 lg:mt-28 grid grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--grid-line)]"
         >
           {heroMetrics.map((m) => (
-            <div key={m.label} className="bg-[#07090d]/80 px-6 py-7 lg:px-8">
+            <div key={m.label} className="bg-[var(--tile)] px-6 py-7 lg:px-8">
               <div className="text-3xl lg:text-4xl font-semibold text-text-1">
                 <Counter value={m.value} suffix={m.suffix} />
               </div>

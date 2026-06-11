@@ -7,7 +7,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 const statusColor: Record<string, string> = {
   Shipped: "text-accent border-accent/30 bg-accent/[0.07]",
   Production: "text-accent-2 border-accent-2/30 bg-accent-2/[0.07]",
-  Ongoing: "text-amber-300 border-amber-300/30 bg-amber-300/[0.07]",
+  Ongoing: "text-[var(--warn)] border-[var(--warn-border)] bg-[var(--warn-bg)]",
 };
 
 export default function AILab() {
@@ -76,7 +76,7 @@ export default function AILab() {
                   </span>
                 </div>
                 <p className="text-[13px] text-text-3 leading-[1.75] flex-1">{item.desc}</p>
-                <div className="mt-5 pt-4 border-t border-white/[0.06] flex flex-wrap gap-1.5">
+                <div className="mt-5 pt-4 border-t border-[var(--border)] flex flex-wrap gap-1.5">
                   {item.tags.map((tag) => (
                     <span key={tag} className="text-[10px] font-mono text-text-4">
                       {tag}
